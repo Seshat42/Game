@@ -10,6 +10,11 @@ const viewHeight = 15;
 const worldWidth = 200;
 const worldHeight = 100;
 
+const story =
+  typeof module !== 'undefined' && module.exports
+    ? require('./story').story
+    : window.story;
+
 const TILE = {
   EMPTY: 0,
   DIRT: 1,
@@ -224,8 +229,21 @@ class Game {
     this.player.inventory[name] = (this.player.inventory[name] || 0) + 1;
     document.getElementById('sndCollect').play();
     if (tile === TILE.ARTIFACT) {
-      this.message = `Found alien artifact!`;
-      this.player.artifacts.push(`Artifact ${this.player.artifacts.length + 1}`);
+      const idx = this.player.artifacts.length;
+      const entry = story.artifacts[idx];
+      const artName = entry ? entry.name : `Artifact ${idx + 1}`;
+      this.message = `Found ${artName}!`;
+      this.player.artifacts.push(artName);
+      if (entry) {
+        this.showStory(entry.description);
+      }
+      if (this.player.artifacts.length === story.artifacts.length) {
+        this.showStory(
+          story.ending,
+          () => localStorage.removeItem('alienMinerSave'),
+          'Play Again'
+        );
+      }
     }
   }
 
@@ -292,6 +310,19 @@ class Game {
     close.onclick = () => menu.classList.add('hidden');
     menu.appendChild(close);
     menu.classList.remove('hidden');
+  }
+
+  showStory(text, callback = null, buttonLabel = 'Continue') {
+    const overlay = document.getElementById('storyOverlay');
+    const content = document.getElementById('storyText');
+    const btn = document.getElementById('storyContinue');
+    content.textContent = text;
+    btn.textContent = buttonLabel;
+    btn.onclick = () => {
+      overlay.classList.add('hidden');
+      if (callback) callback();
+    };
+    overlay.classList.remove('hidden');
   }
 
   drawTile(tile, x, y) {
@@ -371,7 +402,8 @@ class Game {
 window.onload = () => {
   document.getElementById('newGame').onclick = () => {
     localStorage.removeItem('alienMinerSave');
-    new Game();
+    const g = new Game();
+    g.showStory(story.intro);
   };
   document.getElementById('continueGame').onclick = () => {
     new Game();

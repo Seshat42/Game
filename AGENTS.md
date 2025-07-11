@@ -19,4 +19,6 @@ This repository contains an HTML5 game built with vanilla JavaScript.
   populates this menu using `showUpgradeMenu()` and calculates costs as
   `baseCost * level` for each stat. Keep new UI elements minimal and reuse this
   pattern when adding further upgrades.
+- Story scenes use a separate overlay with id `storyOverlay`. Display text via
+  `showStory()` to keep the canvas visible and interactions simple.
 

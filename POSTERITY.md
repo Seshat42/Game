@@ -24,3 +24,8 @@ upgrade choices with their dynamic costs and keeps the canvas visible. This
 pattern keeps the upgrade logic self-contained in `showUpgradeMenu()` and makes
 future expansion straightforward.
 
+## Story overlay
+The storyline uses another DOM overlay, `storyOverlay`, so narrative text does
+not disrupt the main canvas. This approach mirrors the upgrade menu and keeps
+interaction simple on both desktop and mobile.
+
