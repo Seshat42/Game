@@ -6,6 +6,8 @@ artifacts.
 
 The world now scrolls horizontally and features multiple resource types. Player
 progress is saved between sessions and upgrades can be purchased at the shop.
+Story sequences play through an overlay, starting with an intro and revealing
+lore whenever you uncover an artifact. Collect every relic to see the ending.
 
 Open `index.html` in a modern browser to play.
 
