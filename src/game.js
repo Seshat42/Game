@@ -78,6 +78,9 @@ class Game {
     this.loadProgress();
     this.initWorld();
     this.bindKeys();
+    this.bindTouchControls();
+    this.resizeCanvas();
+    window.addEventListener('resize', () => this.resizeCanvas());
     requestAnimationFrame(() => this.gameLoop());
   }
 
@@ -114,6 +117,65 @@ class Game {
           break;
       }
     });
+  }
+
+  bindTouchControls() {
+    const actions = {
+      'btn-left': () => this.move(-1, 0),
+      'btn-right': () => this.move(1, 0),
+      'btn-up': () => this.move(0, -1),
+      'btn-down': () => this.move(0, 1),
+      'btn-dig': () => this.move(0, 1),
+      'btn-refuel': () => this.refuel(),
+      'btn-sell': () => this.sell(),
+      'btn-upgrade': () => this.upgrade()
+    };
+    Object.keys(actions).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const handler = actions[id];
+      el.addEventListener('touchstart', e => {
+        e.preventDefault();
+        handler();
+      });
+      el.addEventListener('touchend', e => e.preventDefault());
+    });
+
+    this.canvas.addEventListener('pointerup', e => {
+      const rect = this.canvas.getBoundingClientRect();
+      const scaleX = this.canvas.width / rect.width;
+      const scaleY = this.canvas.height / rect.height;
+      const cx = Math.floor((e.clientX - rect.left) * scaleX / tileSize);
+      const cy = Math.floor((e.clientY - rect.top) * scaleY / tileSize);
+      const startX = Math.min(
+        worldWidth - viewWidth,
+        Math.max(0, this.player.x - Math.floor(viewWidth / 2))
+      );
+      const startY = Math.min(
+        worldHeight - viewHeight,
+        Math.max(0, this.player.y - Math.floor(viewHeight / 2))
+      );
+      const tx = startX + cx;
+      const ty = startY + cy;
+      const dx = tx - this.player.x;
+      const dy = ty - this.player.y;
+      if (Math.abs(dx) + Math.abs(dy) === 1) {
+        this.move(dx, dy);
+      }
+    });
+  }
+
+  resizeCanvas() {
+    const ratio = viewWidth / viewHeight;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    if (width / height > ratio) {
+      width = height * ratio;
+    } else {
+      height = width / ratio;
+    }
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
   }
 
   move(dx, dy) {
