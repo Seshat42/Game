@@ -15,4 +15,8 @@ This repository contains an HTML5 game built with vanilla JavaScript.
 - Touch controls are wired in `bindTouchControls()` and rely on IDs defined in
   `index.html`. Ensure any new controls keep to this pattern and maintain
   responsive sizing via `resizeCanvas()`.
+- Upgrades are handled via a DOM overlay with id `upgradeMenu`. `upgrade()`
+  populates this menu using `showUpgradeMenu()` and calculates costs as
+  `baseCost * level` for each stat. Keep new UI elements minimal and reuse this
+  pattern when adding further upgrades.
 

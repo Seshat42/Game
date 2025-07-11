@@ -17,3 +17,10 @@ with semi-transparent styling so gameplay remains visible. Canvas dimensions are
 scaled via `resizeCanvas()` to maintain the original aspect ratio on any screen
 size.
 
+## Upgrade menu overlay
+Early versions used the blocking `prompt()` call for upgrades, which halted game
+loop rendering and felt clunky on mobile. The DOM overlay `upgradeMenu` renders
+upgrade choices with their dynamic costs and keeps the canvas visible. This
+pattern keeps the upgrade logic self-contained in `showUpgradeMenu()` and makes
+future expansion straightforward.
+

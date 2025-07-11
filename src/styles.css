@@ -69,3 +69,18 @@ body {
   flex-direction: column;
   gap: 4px;
 }
+
+#upgradeMenu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #fff;
+  padding: 8px;
+  color: #fff;
+}
+
+#upgradeMenu.hidden {
+  display: none;
+}

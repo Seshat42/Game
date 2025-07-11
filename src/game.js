@@ -59,12 +59,13 @@ class Game {
     this.player = {
       x: Math.floor(worldWidth / 2),
       y: 0,
-      fuelCapacity: 100,
+      gasTankSize: 100,
       fuel: 100,
       cash: 0,
-      drill: 1,
+      drillSpeed: 1,
       liftStrength: 1,
-      hull: 1,
+      hullStrength: 1,
+      storageCapacity: 10,
       inventory: {},
       artifacts: []
     };
@@ -183,7 +184,7 @@ class Game {
     const newX = this.player.x + dx;
     const newY = this.player.y + dy;
     if (newX < 0 || newX >= worldWidth || newY < 0 || newY >= worldHeight) return;
-    if (dy > 0 && newY > this.player.drill * 30) {
+    if (dy > 0 && newY > this.player.drillSpeed * 30) {
       this.message = 'Need better drill!';
       return;
     }
@@ -215,6 +216,11 @@ class Game {
       [TILE.IRON]: 'Iron',
       [TILE.SILVER]: 'Silver'
     }[tile];
+    const current = Object.values(this.player.inventory).reduce((a, b) => a + b, 0);
+    if (current >= this.player.storageCapacity) {
+      this.message = 'Inventory full!';
+      return;
+    }
     this.player.inventory[name] = (this.player.inventory[name] || 0) + 1;
     document.getElementById('sndCollect').play();
     if (tile === TILE.ARTIFACT) {
@@ -225,7 +231,7 @@ class Game {
 
   refuel() {
     if (this.world[this.player.y][this.player.x] === TILE.GAS) {
-      this.player.fuel = this.player.fuelCapacity;
+      this.player.fuel = this.player.gasTankSize;
       this.message = 'Refueled!';
     }
   }
@@ -247,19 +253,45 @@ class Game {
 
   upgrade() {
     if (this.world[this.player.y][this.player.x] !== TILE.SHOP || this.player.y !== 0) return;
-    const choices = ['drill', 'fuelCapacity', 'hull', 'liftStrength'];
-    const choice = prompt('Upgrade: drill, fuelCapacity, hull, liftStrength');
-    if (!choices.includes(choice)) return;
-    const level = this.player[choice];
-    const cost = 100 * level;
-    if (this.player.cash >= cost) {
-      this.player.cash -= cost;
-      this.player[choice] += 1;
-      if (choice === 'fuelCapacity') this.player.fuel = this.player.fuelCapacity;
-      this.message = `${choice} upgraded!`;
-      document.getElementById('sndShop').play();
-      this.saveProgress();
-    }
+    this.showUpgradeMenu();
+  }
+
+  showUpgradeMenu() {
+    const menu = document.getElementById('upgradeMenu');
+    menu.innerHTML = '';
+    const upgrades = [
+      { key: 'drillSpeed', label: 'Drill Speed', baseCost: 100 },
+      { key: 'gasTankSize', label: 'Gas Tank', baseCost: 100 },
+      { key: 'hullStrength', label: 'Hull Strength', baseCost: 100 },
+      { key: 'liftStrength', label: 'Lift Strength', baseCost: 100 },
+      { key: 'storageCapacity', label: 'Storage', baseCost: 100 }
+    ];
+    upgrades.forEach(u => {
+      const level = this.player[u.key];
+      const cost = u.baseCost * level;
+      const row = document.createElement('div');
+      row.textContent = `${u.label} Lv.${level} - ${cost}`;
+      const btn = document.createElement('button');
+      btn.textContent = 'Buy';
+      btn.onclick = () => {
+        if (this.player.cash >= cost) {
+          this.player.cash -= cost;
+          this.player[u.key] += 1;
+          if (u.key === 'gasTankSize') this.player.fuel = this.player.gasTankSize;
+          this.message = `${u.label} upgraded!`;
+          document.getElementById('sndShop').play();
+          menu.classList.add('hidden');
+          this.saveProgress();
+        }
+      };
+      row.appendChild(btn);
+      menu.appendChild(row);
+    });
+    const close = document.createElement('button');
+    close.textContent = 'Close';
+    close.onclick = () => menu.classList.add('hidden');
+    menu.appendChild(close);
+    menu.classList.remove('hidden');
   }
 
   drawTile(tile, x, y) {
