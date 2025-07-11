@@ -14,5 +14,13 @@ Open `index.html` in a modern browser to play.
 ```
 node tests/world.js
 node tests/upgrade.js
+node tests/touch.js
 ```
+
+## Mobile Controls
+
+Touch buttons overlay the canvas for movement and actions. Tap the arrows to move
+or dig and use the Refuel, Sell, and Upgrade buttons when standing on the
+appropriate tile. You can also tap adjacent tiles to move a single step in that
+direction.
 

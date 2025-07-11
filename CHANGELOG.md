@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.0] - 2025-07-11
+- Added responsive canvas sizing and mobile touch controls.
+- Documented new control scheme and added test stub for touch bindings.
+
 ## [0.2.0] - 2025-07-11
 - Added side-scrolling with expanded world size.
 - Introduced new resources and depth scaling.

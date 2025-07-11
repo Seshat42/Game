@@ -12,4 +12,7 @@ This repository contains an HTML5 game built with vanilla JavaScript.
 - Run the Node scripts in `tests/` before committing changes.
 - Assets live under `src/svg/` and `src/audio/`.
 - Use the root `.gitignore` to keep OS and editor artifacts out of version control.
+- Touch controls are wired in `bindTouchControls()` and rely on IDs defined in
+  `index.html`. Ensure any new controls keep to this pattern and maintain
+  responsive sizing via `resizeCanvas()`.
 
