@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #eee;
+  text-align: center;
+}
+
+#hud {
+  padding: 8px;
+}
+
+#gameCanvas {
+  background: #222;
+  display: block;
+  margin: 0 auto;
+}
