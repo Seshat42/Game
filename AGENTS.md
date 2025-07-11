@@ -10,4 +10,5 @@ This repository contains an HTML5 game built with vanilla JavaScript.
 - Document significant changes in `CHANGELOG.md`.
 - Architecture decisions belong in `POSTERITY.md`.
 - Run any lints or tests as described in future updates (none currently).
+- Use the root `.gitignore` to keep OS and editor artifacts out of version control.
 
