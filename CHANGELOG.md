@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.1] - 2025-07-14
+- Fixed duplicated `story` constant causing browser load error by renaming the
+  reference in `src/game.js`.
+
 ## [0.5.0] - 2025-07-13
 - Added narrative overlay with intro, artifact lore, and a win screen.
 - Introduced `src/story.js` for all storyline text.

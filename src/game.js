@@ -10,10 +10,10 @@ const viewHeight = 15;
 const worldWidth = 200;
 const worldHeight = 100;
 
-const story =
+const storyData =
   typeof module !== 'undefined' && module.exports
     ? require('./story').story
-    : window.story;
+    : story;
 
 const TILE = {
   EMPTY: 0,
@@ -230,16 +230,16 @@ class Game {
     document.getElementById('sndCollect').play();
     if (tile === TILE.ARTIFACT) {
       const idx = this.player.artifacts.length;
-      const entry = story.artifacts[idx];
+      const entry = storyData.artifacts[idx];
       const artName = entry ? entry.name : `Artifact ${idx + 1}`;
       this.message = `Found ${artName}!`;
       this.player.artifacts.push(artName);
       if (entry) {
         this.showStory(entry.description);
       }
-      if (this.player.artifacts.length === story.artifacts.length) {
+      if (this.player.artifacts.length === storyData.artifacts.length) {
         this.showStory(
-          story.ending,
+          storyData.ending,
           () => localStorage.removeItem('alienMinerSave'),
           'Play Again'
         );
@@ -403,7 +403,7 @@ window.onload = () => {
   document.getElementById('newGame').onclick = () => {
     localStorage.removeItem('alienMinerSave');
     const g = new Game();
-    g.showStory(story.intro);
+    g.showStory(storyData.intro);
   };
   document.getElementById('continueGame').onclick = () => {
     new Game();
