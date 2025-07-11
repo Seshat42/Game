@@ -1,6 +1,6 @@
 // stub document and window before requiring game code
 const created = {};
-['btn-left','btn-right','btn-up','btn-down','btn-dig','btn-refuel','btn-sell','btn-upgrade'].forEach(id => {
+['btn-left','btn-right','btn-up','btn-down','btn-dig','btn-refuel','btn-sell','btn-upgrade','upgradeMenu'].forEach(id => {
   created[id] = { addEventListener: () => {} };
 });
 created.gameCanvas = {
